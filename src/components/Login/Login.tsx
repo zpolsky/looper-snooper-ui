@@ -1,5 +1,6 @@
 import React, { CSSProperties, ReactElement, useState } from "react";
 import { Button, LinearProgress, TextField } from "@material-ui/core";
+import { ChatClient } from "../../services/chat";
 
 export default function Login(): ReactElement {
   const [username, setUsername] = useState<string>("");
@@ -7,6 +8,8 @@ export default function Login(): ReactElement {
 
   const handleLogin = () => {
     setIsSubmitting(true);
+    ChatClient.openConnection();
+    ChatClient.startTimer();
   };
 
   const containerStyle: CSSProperties = {
