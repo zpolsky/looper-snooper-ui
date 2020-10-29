@@ -3,6 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Login from "../Login/Login";
 import logo from "../../logo.svg";
 import { Container } from "@material-ui/core";
+import Board from "../Board/Board";
 
 const HomePage = (): ReactElement => (
   <div className="App">
@@ -29,6 +30,7 @@ const Router = (): ReactElement => (
       <Switch>
         <Route key="login" path="/login" component={Login} />
         <Route key="home" path="/home" component={HomePage} />
+        <Route key="board" path="/board" component={Board} />
         <Route path="/">
           <Redirect to="/home" />
         </Route>

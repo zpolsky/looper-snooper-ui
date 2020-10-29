@@ -1,6 +1,7 @@
 import React, { CSSProperties, ReactElement, useState } from "react";
 import { Button, LinearProgress, TextField } from "@material-ui/core";
 import { ChatClient } from "../../services/chat";
+import { Redirect } from "react-router-dom";
 
 export default function Login(): ReactElement {
   const [username, setUsername] = useState<string>("");
@@ -9,7 +10,6 @@ export default function Login(): ReactElement {
   const handleLogin = () => {
     setIsSubmitting(true);
     ChatClient.openConnection();
-    ChatClient.startTimer();
   };
 
   const containerStyle: CSSProperties = {
@@ -19,7 +19,6 @@ export default function Login(): ReactElement {
   const usernameStyle: CSSProperties = {
     marginBottom: "8px",
   };
-
   return (
     <div style={containerStyle}>
       {isSubmitting && <LinearProgress />}
@@ -44,6 +43,7 @@ export default function Login(): ReactElement {
           </Button>
         </div>
       </form>
+      {isSubmitting && <Redirect to="/board" />}
     </div>
   );
 }
