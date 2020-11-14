@@ -1,21 +1,10 @@
 import createConnection from "socket.io-client";
-
-export enum CellType {
-  Red = 'RED',
-  Blue = 'BLUE',
-  Bomb = 'BOMB',
-  None = 'NONE',
-}
-
-export interface Cell {
-  word: string;
-  team: CellType;
-  isRevealed: boolean;
-}
+import { Board } from "../models/board.model";
+import store from "../store";
+import { setBoard } from "../store/features/game-slice";
 
 export class ChatClient {
   private static socket: SocketIOClient.Socket;
-  public static board: Cell[][] | null = null;
 
   static openConnection(): void {
     this.socket = createConnection("http://localhost:4000");
@@ -25,10 +14,10 @@ export class ChatClient {
     this.socket.on("timer", (timeRemaining: number) => {
       console.log("Time remaining =", timeRemaining);
     });
-    this.socket.on("createGame", (payload: string) => {
-      const board = JSON.parse(payload) as Cell[][];
+    this.socket.on("createGame", (payload: { board: Board }) => {
+      const { board } = payload;
       console.log("Game board =", board);
-      this.board = board;
+      store.dispatch(setBoard({ board }));
     });
   }
   static startTimer(): void {

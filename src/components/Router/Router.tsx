@@ -3,7 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Login from "../Login/Login";
 import logo from "../../logo.svg";
 import { Container } from "@material-ui/core";
-import Board from "../Board/Board";
+import Board from "../GameBoard/GameBoard";
 
 const HomePage = (): ReactElement => (
   <div className="App">
