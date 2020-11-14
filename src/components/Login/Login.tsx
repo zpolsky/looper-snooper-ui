@@ -1,13 +1,19 @@
 import React, { CSSProperties, ReactElement, useState } from "react";
+import { useDispatch ,useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { Button, LinearProgress, TextField } from "@material-ui/core";
 import { ChatClient } from "../../services/chat";
-import { Redirect } from "react-router-dom";
+import { RootState } from "../../store/root-reducer";
+import { login } from "../../store/features/user-slice";
 
 export default function Login(): ReactElement {
+  const dispatch = useDispatch();
+  const { user, isConnected } = useSelector((state: RootState) => state.user);
   const [username, setUsername] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleLogin = () => {
+    dispatch(login(username))
     setIsSubmitting(true);
     ChatClient.openConnection();
   };
@@ -19,6 +25,7 @@ export default function Login(): ReactElement {
   const usernameStyle: CSSProperties = {
     marginBottom: "8px",
   };
+
   return (
     <div style={containerStyle}>
       {isSubmitting && <LinearProgress />}
@@ -43,7 +50,7 @@ export default function Login(): ReactElement {
           </Button>
         </div>
       </form>
-      {isSubmitting && <Redirect to="/board" />}
+      {user && isConnected && <Redirect to="/board" />}
     </div>
   );
 }

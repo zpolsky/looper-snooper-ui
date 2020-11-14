@@ -4,6 +4,8 @@ import Login from "../Login/Login";
 import logo from "../../logo.svg";
 import { Container } from "@material-ui/core";
 import Board from "../GameBoard/GameBoard";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/root-reducer";
 
 const HomePage = (): ReactElement => (
   <div className="App">
@@ -24,19 +26,28 @@ const HomePage = (): ReactElement => (
   </div>
 );
 
-const Router = (): ReactElement => (
-  <Container maxWidth="lg">
-    <BrowserRouter>
-      <Switch>
-        <Route key="login" path="/login" component={Login} />
-        <Route key="home" path="/home" component={HomePage} />
-        <Route key="board" path="/board" component={Board} />
-        <Route path="/">
-          <Redirect to="/home" />
-        </Route>
-      </Switch>
-    </BrowserRouter>
-  </Container>
-);
+const Router = (): ReactElement => {
+  const { user } = useSelector((state: RootState) => state.user);
+
+  return (
+    <Container maxWidth="lg">
+      <BrowserRouter>
+        <Switch>
+          <Route key="login" path="/login" component={Login} />
+          {!user && (
+            <Route path="/">
+              <Redirect to="/login" />
+            </Route>
+          )}
+          <Route key="home" path="/home" component={HomePage} />
+          <Route key="board" path="/board" component={Board} />
+          <Route path="/">
+            <Redirect to="/home" />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </Container>
+  );
+};
 
 export default Router;

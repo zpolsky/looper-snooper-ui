@@ -1,6 +1,7 @@
 import createConnection from "socket.io-client";
 import { Board } from "../models/board.model";
 import store from "../store";
+import { setIsConnected } from "../store/features/user-slice";
 import { setBoard } from "../store/features/game-slice";
 
 export class ChatClient {
@@ -8,6 +9,9 @@ export class ChatClient {
 
   static openConnection(): void {
     this.socket = createConnection("http://localhost:4000");
+    this.socket.on("connect", () => {
+      store.dispatch(setIsConnected(true))
+    });
     this.socket.on("message", (payload: string) => {
       console.log("my personal payload =", payload);
     });
